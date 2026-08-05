@@ -521,12 +521,79 @@ two correctness passes together are close to length-neutral.
 
 ---
 
-# PLANNED — remaining content additions (agreed, not yet applied)
+# Ninth pass — dataset table and Future Work section (planned items 2 and 3, APPLIED)
 
-**Item 1 (PGCF subsection) was applied in the sixth pass above** as part of the framing
-fix, since the outline asymmetry was itself a framing problem. Items 2 and 3 remain
-pending. Revised net cost of what is left: **~+16 pt** (dataset table −45, future work
-+61).
+All three planned additions are now in the paper. Item 1 (PGCF subsection) landed in the
+sixth pass; items 2 and 3 are described here.
+
+## Dataset table (§IV-A)
+
+Replaces the two remaining descriptive paragraphs. **The corpus figures were recovered
+from the repository, not estimated** — the plan had flagged them as blocked, but
+`github_codebase/` turned out to contain the sources:
+
+| Source | Yielded |
+|---|---|
+| `archive (1)/…/meta_data.csv` | FakeAVCeleb: 21,566 clips, 500 subjects, five ethnicities, both genders; 500 RealVideo-RealAudio; methods wav2lip (9,602), fsgan (3,964), fsgan-wav2lip (3,553), faceswap-wav2lip (2,717), faceswap (730), rtvc (500) |
+| `build_combined_dataset.py` | Celeb-DF-v2: 590 real (Celeb-real) / 5,639 fake (Celeb-synthesis) |
+| `dataset.py` | Celeb-DF-v2 split `val_ratio=0.2` → 80/20, balanced |
+| the paper itself | FakeAVCeleb held-out: 198 clips (100 real / 98 fake), subject-level |
+
+No cell is invented. The **LAV-DF row from the planned table was dropped** — the eighth
+pass established that dataset was never used, so it cannot appear in a table of corpora
+used.
+
+Kept as prose because it is not tabular: the caveat that PGCF is scored on FakeAVCeleb
+partitions for protocol parity, *not* as a replacement for its Celeb-DF-v2 result.
+Preprocessing (T=16, 16 kHz, 1 s windows, 64 mel bins) moved into the lead-in sentence.
+
+Table count is now **five**: mirror, truth, **datasets**, leakage, main.
+
+## Future Work (§VI-C)
+
+Written as a *consolidation*, as planned. Each of the four limitations maps to exactly
+one direction, and **every forward-looking clause was removed from Limitations** so
+nothing is stated twice:
+
+| Clause | Was in | Now in |
+|---|---|---|
+| "stronger audio-specific backbones… could narrow this gap" | VI-B | VI-C only |
+| "post-hoc temperature scaling is recommended" | VI-B | VI-C only |
+| "a threshold search would likely improve the balance" | VI-B | VI-C only |
+| "broader validation… remains future work" | VI-B | VI-C only |
+| "Future work will focus on…" (whole sentence) | Conclusion | **deleted** |
+
+Limitations now states only limitations. The Conclusion now ends on the
+evaluation-integrity finding. VI-C adds one direction the paper had not previously
+raised — feature-level rather than decision-level fusion, which the shared temporal
+pipeline already makes feasible.
+
+Placed before the Conclusion, per IEEE convention that nothing follows it but
+Acknowledgment and Appendix.
+
+## Cost — higher than planned
+
+**+48 words, one table, one heading: ~+220 pt (~0.33 column), against a planned +16 pt.**
+
+The plan costed the dataset table as *net −45 pt* on the assumption it would displace 136
+words of §IV-A prose. The eighth pass had already deleted the LAV-DF paragraph, leaving
+only ~88 words for the table to absorb, so the displacement saving mostly evaporated. The
+Future Work consolidation came in near its +61 pt estimate.
+
+**Recommendation:** cut Table II (the AND-gate truth table, ~113 pt) to offset roughly
+half of this. Eq. (2) now states the rule unambiguously, and after the polarity fix the
+table has three identical "Fake" rows — it carries even less information than before.
+
+## Noted, not fixed
+
+**Celeb-DF-v2 is used but never cited.** It appears in the abstract, Introduction, §IV-A
+and the new table with no `\cite`. A reviewer may flag using a dataset without citing it.
+Adding the reference costs ~3 bibliography lines (~29 pt); left to the authors given the
+page pressure.
+
+---
+
+# PLANNED — all items applied
 
 Three changes proposed by the authors, costed against the page budget. **Net cost of all
 three is ~+24 pt**, because two of them are restructurings rather than additions.
