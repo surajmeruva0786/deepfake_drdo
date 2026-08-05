@@ -173,17 +173,54 @@ trims were added:
 
 **Net −26 words (~38 pt) plus ~10 pt of caption skip**, against a 20–30 pt gap.
 
+---
+
+# Fourth pass — drop the ablation figure
+
+Pass 3 did not clear page 7. Taking the largest lever off the reserve list.
+
+## What changed
+
+`figs/ablation_study.jpg` and its float are **removed**. It plotted AUC-ROC and accuracy
+for the four configurations; `metrics_unseen_forest.jpg` already plots **all five**
+metrics for the same four configurations, so the ablation figure was a strict subset of
+the forest plot. Nothing is shown in the paper that was only shown there.
+
+| | |
+|---|---|
+| Figure + caption + float separation | **~170 pt** freed |
+| Longer forest caption (1 line → ~3) | −19 pt |
+| §V-A sentence reworked (−6 words) | −7 pt |
+| **Net** | **~158 pt (~0.24 column)** |
+
+The paper is now **5 figures**: architecture, forest, confusion matrices, t-SNE, noise
+robustness.
+
+## Keeping the ablation framing
+
+Dropping the figure must not drop the *claim* — "ablation study" is how reviewers look
+for per-modality contribution analysis, and the paper should still visibly do one. Two
+edits preserve it:
+
+- The forest plot's caption is retitled **"Ablation study: per-metric comparison across
+  all four configurations… isolating the contribution of each modality and of each
+  fusion rule."** It also now states that the Hard AND-gate has no AUC bar because it
+  produces no rankable score — a point the deleted caption had been carrying.
+- The §V-A sentence that pointed at both figures now points at the forest plot alone and
+  names it as the ablation.
+
+`figs/ablation_study.jpg` is left in the repo, unreferenced, alongside the other five
+figures dropped in earlier trims.
+
 ## Remaining levers, if still over
 
 In order of least damage:
 
-1. Drop `ablation_study.jpg` entirely (~215 pt incl. caption). It plots AUC + accuracy
-   for the four configurations; `metrics_unseen_forest.jpg` already plots *all five*
-   metrics for the same four. Largest single remaining cut, and the two figures are
-   genuinely redundant.
-2. Drop Table II, the AND-gate truth table (~113 pt). Eq. (2) already states it
-   exhaustively. Retained by explicit decision in all three passes.
-3. Related Work (269 words) is the only prose block never trimmed.
+1. Drop Table II, the AND-gate truth table (~113 pt). Eq. (2) already states it
+   exhaustively. Retained by explicit decision in all four passes.
+2. Related Work (269 words) is the only prose block never trimmed.
+3. `tsne.jpg` is short (0.296 aspect ratio, ~75 pt) but its §V-C paragraph could lose
+   ~20 words.
 
 **Deliberately avoided:** applying *et al.* to `tolosana`, `rossler`, `frank`, or
 `sabir` would save ~4 more bib lines cheaply, but those have 5–6 authors, under IEEE's
