@@ -724,6 +724,70 @@ generic list rather than against a measured shortfall.
 
 ---
 
+# Thirteenth pass — T standardized, Celeb-DF-v2 cited
+
+Two fixes from the final line-by-line review.
+
+## T=16 vs T=32
+
+The clip length was stated three different ways:
+
+| Location | Was |
+|---|---|
+| §III-B (PGCF) | `T=32` frames per clip |
+| §III-C (audio windowing) | "the same `T=16` chunks used for video" |
+| §IV-A (preprocessing) | "Video is sampled at `T=16` frames per clip" |
+
+**Standardized on T=32**, per the authors, which also matches the repo's
+`Celeb-DF-v2-32frames` and `Combined-32frames` directories.
+
+**Open arithmetic question, not resolved here:** §III-C describes each audio chunk as a
+one-second, 16,000-sample waveform. At T=32 chunks that implies 32 s of audio per clip,
+which is far longer than a typical FakeAVCeleb clip. Either the chunks are shorter than
+1 s, or they overlap, or the audio branch uses a different T from the video branch. Worth
+checking before submission — a reviewer who multiplies these two numbers will notice.
+
+## Celeb-DF-v2 citation
+
+The corpus is used in the abstract, the Introduction, §IV-A and the dataset table, and
+was **never cited**. Added:
+
+> Y. Li, X. Yang, P. Sun, H. Qi, and S. Lyu, "Celeb-DF: A large-scale challenging dataset
+> for DeepFake forensics," *Proc. IEEE/CVF CVPR*, 2020, pp. 3207–3216.
+
+Cited at first mention (Introduction ¶2) and in the dataset table header, matching how
+FakeAVCeleb is handled. Note this is a *different* paper from the existing
+`li2019exposing` (X. Li and S. Lyu, face-warping artifacts), hence the separate key
+`li2020celebdf`.
+
+**Bibliography renumbered again** — the new entry takes position 2 by first-citation
+order: tolosana, **celebdf**, prajwal, khalid, rossler, frank, li2019, ciftci, jung,
+sabir, cai, woo, dehaan. Now 13 references. Audit clean.
+
+Cost: ~+29 pt for the extra bibliography entry.
+
+## Still outstanding from the final review
+
+Not addressed in this pass, listed here so they are not lost:
+
+1. **Hard-fusion numbers are stale** (Table V row 4, §V-A, §V-B, confusion-matrix
+   figure). §V-A's "the Hard AND-gate is the more conservative of the two" is now
+   backwards. Bounds derived from Table V and the §V-B confusion counts:
+   accuracy 0.929–0.944, precision 0.882–0.899, recall 0.990–1.000.
+2. **PGCF's training corpus may be undisclosed.** `build_combined_dataset.py` assembles
+   Celeb-DF-v2 *plus 7,000 FaceForensics++ folders*; the paper says Celeb-DF-v2 only.
+   Needs the authors to confirm which was actually used.
+3. **PGCF's 0.999 AUC reads as a cross-dataset result** (trained per the paper on
+   Celeb-DF-v2, evaluated on FakeAVCeleb) that exceeds published state of the art, in a
+   paper that calls cross-dataset evaluation future work.
+4. **`figs/architecture` is not in the repo** — the paper does not compile standalone.
+5. **The Soft rule retains the old polarity**, suppressing exactly the single-modality
+   attacks the corrected Hard gate catches. The two rules now embody opposite
+   philosophies without the paper acknowledging it.
+6. **No baseline comparison** against any published method on the paper's own split.
+
+---
+
 # PLANNED — all items applied
 
 Three changes proposed by the authors, costed against the page budget. **Net cost of all
