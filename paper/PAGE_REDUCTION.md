@@ -364,9 +364,28 @@ features underlying **PGCF's** frequency stream", "**PGCF's** CHROM-based rPPG s
 reader skimming Related Work would file both as existing systems. Now phrased as
 **"our video branch's"** and **"our audio branch's"** throughout.
 
+## Cause 4: the abstract's opening line (follow-up fix)
+
+Caught on a re-read after the pass above. The very first sentence argued **only the audio
+case**:
+
+> "Not every deepfake is visible in the video itself: in some forgeries the picture
+> remains entirely authentic and only the voice has been cloned, a case a detector
+> examining pixels alone will always miss."
+
+Every clause points one way — video is insufficient, audio is what is missing — so the
+paper's opening line implied AGCF was the novelty before a single contribution was
+stated. Now symmetric:
+
+> "A deepfake can hide in either modality: some forgeries leave the picture authentic and
+> clone only the voice, others leave the speech untouched and swap only the face. Neither
+> pixels nor audio alone can settle whether a video is genuine."
+
+Both branches are motivated equally from the first line. **+6 words.**
+
 ## Cost
 
-**+16 words and one promoted heading, ~+31 pt.** No metric, figure, table, or reference
+**+22 words and one promoted heading, ~+38 pt.** No metric, figure, table, or reference
 changed. This is the first pass in the series that *grew* the paper; it is covered
 several times over by the Table II cut queued below.
 
