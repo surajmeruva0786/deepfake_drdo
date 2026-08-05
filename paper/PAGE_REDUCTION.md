@@ -291,7 +291,93 @@ levers 1–3 are exhausted.
 
 ---
 
-# PLANNED — three content additions (agreed, not yet applied)
+# Sixth pass — PGCF and AGCF as one proposed framework
+
+The third pass removed the *words* that made PGCF read as prior work. It was not enough:
+the paper still told a sequential story — PGCF exists, it has a weakness, we extend it.
+Two deeper causes, neither fixable by word substitution.
+
+## Cause 1: the narrative arc
+
+Both the abstract and the Introduction **opened by developing PGCF**, then pivoted:
+
+> "We first develop PGCF… **PGCF performs well, but** because it analyzes video only, it
+> is structurally blind to audio-only attacks. **We therefore extend it into** PGCF+AGCF,
+> a two-branch detector **whose second network**…"
+
+That is a story about improving an existing system. Both now open by proposing
+**PGCF+AGCF** as the contribution and introduce the branches as peers:
+
+> "We propose PGCF+AGCF, an audio-visual deepfake detector built from **two networks
+> introduced in this work**. The Physiology-Guided Consistency Framework (PGCF) examines
+> video… The Audio-Guided Consistency Framework (AGCF) examines the speech track through
+> a stream-for-stream counterpart…"
+
+The video-only blindness argument is kept — it is the paper's motivation — but made
+**symmetric**: a video-only detector misses lip-sync attacks, an audio-only detector
+misses a silent face-swap, so neither covers the attack surface alone. Previously only
+the video half of that argument was stated, which framed audio as the fix for a video
+problem rather than as an equal half of the design.
+
+## Cause 2: one-directional mirroring
+
+Every statement of correspondence ran **one way** — AGCF mirrored, corresponded to, was
+identical to, inherited from, or reused PGCF. Cumulatively that casts PGCF as the
+original and AGCF as the derivative, which is precisely the impression to avoid.
+
+| Was | Now |
+|---|---|
+| "AGCF is designed so that every architectural choice **in PGCF** has a direct audio counterpart" | "**The two branches** are designed so that every architectural choice in one has a direct counterpart in the other" |
+| "the **identical** temporal pipeline **used by PGCF**" | "the three-stage temporal pipeline **shared by both branches**" |
+| "Both CNN designs are **inherited directly from their PGCF counterparts**" | "Both CNN designs are **matched to** their video-branch counterparts" |
+| Table I: "*identical*: TGF → …" | Table I: "*shared*: TGF → …" |
+| "AGCF is trained… **matching PGCF's regime**" | "**Both branches share a single training regime**" |
+| "trained with the same objective… **as PGCF**" | "…as **the video branch**" |
+| Conclusion: "AGCF, **its** architectural mirror" | "PGCF for video and AGCF for audio, designed as architectural mirrors **of each other**" |
+| "an audio companion network" (abstract, intro) | "two networks introduced in this work" |
+| "built in two stages" (contributions) | "comprising two networks **proposed here**" |
+
+## Cause 3: the outline contradicted the prose
+
+PGCF was a **subsubsection inside System Overview** while AGCF had a full subsection. The
+table of contents itself said video was background and audio was the contribution.
+
+```
+was                                  now
+III-A  System Overview               III-A  System Overview
+         (sss) Video Branch (PGCF)   III-B  PGCF: Physiology-Guided Consistency Framework
+III-B  AGCF: …                       III-C  AGCF: Audio-Guided Consistency Framework
+III-C  Late Fusion                   III-D  Late Fusion
+```
+
+This was also item 1 of the planned-additions list below, now **applied**.
+
+Renumbering broke two hand-written cross-references, both updated: `Section~III-A` →
+`III-B` (§IV-A Datasets) and `Section~III-C` → `III-D` (§III-A System Overview). All six
+`Section~` references re-verified to resolve.
+
+## Related Work
+
+PGCF was being discussed among the prior art in the third person — "the DCT-based
+features underlying **PGCF's** frequency stream", "**PGCF's** CHROM-based rPPG stream",
+"**AGCF** deliberately departs… **reusing** a backbone identical to **PGCF's**". A
+reader skimming Related Work would file both as existing systems. Now phrased as
+**"our video branch's"** and **"our audio branch's"** throughout.
+
+## Cost
+
+**+16 words and one promoted heading, ~+31 pt.** No metric, figure, table, or reference
+changed. This is the first pass in the series that *grew* the paper; it is covered
+several times over by the Table II cut queued below.
+
+---
+
+# PLANNED — remaining content additions (agreed, not yet applied)
+
+**Item 1 (PGCF subsection) was applied in the sixth pass above** as part of the framing
+fix, since the outline asymmetry was itself a framing problem. Items 2 and 3 remain
+pending. Revised net cost of what is left: **~+16 pt** (dataset table −45, future work
++61).
 
 Three changes proposed by the authors, costed against the page budget. **Net cost of all
 three is ~+24 pt**, because two of them are restructurings rather than additions.
