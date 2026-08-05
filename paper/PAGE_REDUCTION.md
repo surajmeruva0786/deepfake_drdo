@@ -289,6 +289,92 @@ In order of least damage:
 six-name threshold, and some style checkers flag it. Only reach for these if
 levers 1–3 are exhausted.
 
+---
+
+# PLANNED — three content additions (agreed, not yet applied)
+
+Three changes proposed by the authors, costed against the page budget. **Net cost of all
+three is ~+24 pt**, because two of them are restructurings rather than additions.
+Cutting Table II alone more than pays for them.
+
+## 1. Promote PGCF to its own subsection
+
+```
+III-A  System Overview
+III-B  PGCF: Physiology-Guided Consistency Framework   <- promoted from subsubsection
+III-C  AGCF: Audio-Guided Consistency Framework
+III-D  Late Fusion: Soft vs. Hard AND-Gate
+```
+
+Today AGCF has a full subsection while PGCF sits one level deeper, inside "System
+Overview". The outline therefore *still* says what the third pass removed from the
+prose — that video is background and audio is the contribution. **~+8 pt.**
+
+Knock-on: renumbering breaks two hand-written cross-references —
+`Section~III-A` → `III-B` in §IV-A Datasets, and `Section~III-C` → `III-D` in System
+Overview. The audit script (`labels/refs` + `Section~` resolution) catches these.
+
+## 2. Dataset table, replacing the §IV-A prose
+
+A reproducibility table, **replacing** the three descriptive paragraphs rather than
+sitting alongside them — that prose is exactly what belongs in a table.
+
+| Dataset | Role here | Clips (real/fake) | Subjects | Split | Manipulations |
+|---|---|---|---|---|---|
+| Celeb-DF-v2 | Train/val PGCF | ? | ? | ? | face-swap |
+| FakeAVCeleb | Train/val AGCF; fusion eval | 198 (100/98) eval | ? | identity-disjoint | FaceSwap, Wav2Lip, DeepFaceLab |
+| LAV-DF | Cross-dataset (ongoing) | 300 (150/150) | ? | zero-shot | content-driven A/V |
+
+Remove 136 words (−195 pt), add table (~105 pt) + two-sentence lead-in (~46 pt) =
+**net −45 pt.** Frees space *and* serves reproducibility better than the prose.
+
+**Blocked on numbers not present anywhere in the paper:** Celeb-DF-v2 clip counts,
+real/fake split, subject count and train/val partition (the only Celeb-DF-v2 figure in
+the paper is AUC 0.824); FakeAVCeleb *training* clip and subject counts (only evaluation
+splits are given); LAV-DF subject count. Preprocessing can be filled from the paper
+already: T=16 frames, 16 kHz, 1 s / 16,000-sample windows, 64 mel bins. Unknown cells
+should be "—" rather than invented.
+
+Table count stays at four: mirror, **dataset**, leakage, main.
+
+## 3. Future work as §VI-C, consolidating rather than adding
+
+The authors asked for a future-directions section. Future work is currently stated in
+**two** places already — the Conclusion's closing sentence, and a forward-looking clause
+in all four Limitations entries. A third location would be visible padding.
+
+Instead, `VI-C` **absorbs** both: Limitations then states limitations, the Conclusion
+concludes, and future work gets one home with room to say more than one sentence.
+
+Placed as a Discussion subsection, not a section after the Conclusion — IEEE convention
+is that nothing follows the Conclusion but Acknowledgment and Appendix.
+
+~120 new words (+138 pt) + heading (+15 pt), less ~45 words from Limitations (−52 pt)
+and ~35 words from the Conclusion (−40 pt) = **~+61 pt**, against ~150 pt if appended.
+
+**Care needed:** some Limitations clauses are load-bearing for the limitation itself,
+not merely forward-looking ("stronger backbones could narrow this gap" explains *why*
+the gap is addressable). Better to leave such a clause in place and absorb the ~20 pt
+than to leave a stub.
+
+## Budget
+
+| Item | pt |
+|---|---|
+| PGCF promotion | +8 |
+| Dataset table (replacing prose) | −45 |
+| Future work §VI-C (consolidating) | +61 |
+| **Net cost of all three** | **+24** |
+| Cut Table II | −113 |
+| **Net** | **−89** |
+
+## Explicitly kept
+
+Sized against these *restructured* proposals, the t-SNE figure does **not** need to go —
+it is worth more than a truth table restating Eq. (2). Related Work and §VI-A stay
+untouched. Table III and §IV-B (the evaluation-integrity audit) are the most distinctive
+material in the paper and were never cut candidates.
+
 ## Unused figures
 
 These are in `figs/` but not referenced by the current `main.tex`, having been dropped
