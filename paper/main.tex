@@ -201,7 +201,7 @@ Requiring consensus to clear a clip rather than to condemn it is what lets the f
 Table~\ref{tab:datasets} summarizes both corpora and the protocol applied to each. Video is sampled at $T=16$ frames per clip; audio is resampled to 16~kHz and windowed into 1~s (16{,}000-sample) segments represented by 64 mel bins.
 
 \begin{table}[t]
-\caption{Corpora Used and Their Evaluation Protocol}
+\caption{Dataset Used and Their Evaluation Protocol}
 \label{tab:datasets}
 \centering
 \small
@@ -323,7 +323,7 @@ Figure~\ref{fig:noise} reports AUC under additive Gaussian input noise ($\sigma$
 \section{Discussion}
 
 \subsection{Complementarity of Modalities and the AND-Gate}
-Requiring unanimity for the \emph{Real} verdict upper-bounds the AND-gate's miss rate by $\min(\text{FNR}_v, \text{FNR}_a)$: a forgery escapes only if \emph{both} branches independently fail to see it. Because PGCF and AGCF consume disjoint input signals (pixels vs. waveform) and train independently, their misses are only weakly correlated. This is what the paper's motivating hypothesis demands: PGCF is blind to audio-driven attacks that leave the visual stream untouched (e.g., voice cloning over an authentic video), while AGCF is blind to visual-only attacks that leave the audio untouched (e.g., a silent face-swap). A rule requiring unanimity to declare a clip \emph{fake} would discard every such attack; requiring it to declare a clip \emph{real} lets either branch raise the alarm. The symmetric cost is a fused false-positive rate bounded by $\text{FPR}_v + \text{FPR}_a$ rather than by either alone -- a trade-off to select on the relative cost of a missed forgery versus a false accusation. In a monitoring role where flagged material is escalated to a human analyst rather than acted on automatically, that balance favours recall -- the regime the AND-gate occupies.
+Requiring unanimity for the \emph{Real} verdict upper-bounds the AND-gate's miss rate by $\min(\text{FNR}_v, \text{FNR}_a)$: a forgery escapes only if \emph{both} branches fail to see it. Because PGCF and AGCF consume disjoint signals (pixels vs. waveform) and train independently, their misses are weakly correlated, so the fused rate tends toward the product of the two rather than the minimum. This is what the single-modality attacks of Section~III-D require, each being invisible to one branch and evident to the other. The symmetric cost is a fused false-positive rate bounded by $\text{FPR}_v + \text{FPR}_a$ rather than by either alone. In a monitoring role, where flagged material is escalated to a human analyst rather than acted on automatically, that balance favours recall -- the regime the AND-gate occupies.
 
 \subsection{Limitations}
 \textbf{Audio generalization gap.} AGCF's identity-disjoint AUC (0.884) trails PGCF's (0.999) and is markedly more noise-sensitive (Section~V-D). \textbf{Calibration.} None of the three scoring configurations is well calibrated; Soft fusion in particular is over-confident at low predicted probabilities, since a low-but-nonzero product can still correspond to a majority-fake sub-population. \textbf{Fixed thresholds.} Both $\tau_v$ and $\tau_a$ sit at 0.5 throughout, an operating point taken by convention rather than tuned. \textbf{Dataset scale.} The 198-clip identity-disjoint held-out set is small by modern standards, and every reported number comes from a single corpus.
