@@ -131,7 +131,7 @@ A separate line of work addresses \emph{audio-only} spoofing. AASIST \cite{jung2
 Figure~\ref{fig:architecture} illustrates the complete PGCF+AGCF pipeline, described in full below. Given a video clip, two branches each produce an independent estimate: $P(\text{fake}\mid\text{video})$ from PGCF, and $P(\text{fake}\mid\text{audio})$ from AGCF. Both are trained \emph{independently} and combined only at inference time via a late-fusion rule (Section~III-D). The two branches correspond stream for stream and stage for stage, making their combination a principled comparison rather than an arbitrary pairing.
 
 \subsection{PGCF: Physiology-Guided Consistency Framework}
-PGCF, the video branch, processes $T=16$ frames per clip through three parallel streams: (i) a Spatial stream (ResNet50 + CBAM \cite{woo2018cbam}) producing a 256-d embedding; (ii) a Frequency stream (3-layer 2D-CNN over a 4-channel RGB+DCT-energy input) producing a 256-d embedding; and (iii) an rPPG stream (1D-CNN over a CHROM \cite{dehaan2013chrom} blood-volume-pulse signal) producing a 128-d embedding. The Physiology-Guided Cross-Modal Consistency (PGCMC) module estimates rPPG reliability via spectral entropy $c$ and inter-stream agreement via a cosine-similarity score $s$, both of which gate the fusion of the Spatial and Frequency streams into a 512-d representation, passed through Temporal Gradient Fusion (TGF), 4-head self-attention, and a BiLSTM(256) before a final Linear(512$\to$2) classifier.
+PGCF, the video branch, processes $T=32$ frames per clip through three parallel streams: (i) a Spatial stream (ResNet50 + CBAM \cite{woo2018cbam}) producing a 256-d embedding; (ii) a Frequency stream (3-layer 2D-CNN over a 4-channel RGB+DCT-energy input) producing a 256-d embedding; and (iii) an rPPG stream (1D-CNN over a CHROM \cite{dehaan2013chrom} blood-volume-pulse signal) producing a 128-d embedding. The Physiology-Guided Cross-Modal Consistency (PGCMC) module estimates rPPG reliability via spectral entropy $c$ and inter-stream agreement via a cosine-similarity score $s$, both of which gate the fusion of the Spatial and Frequency streams into a 512-d representation, passed through Temporal Gradient Fusion (TGF), 4-head self-attention, and a BiLSTM(256) before a final Linear(512$\to$2) classifier.
 
 \subsection{AGCF: Audio-Guided Consistency Framework}
 The two branches are designed so that every architectural choice in one has a direct counterpart in the other. Table~\ref{tab:mirror} summarizes this correspondence stream by stream.
@@ -198,9 +198,28 @@ Requiring consensus to clear a clip rather than to condemn it is what lets the f
 \section{Datasets and Evaluation Protocol}
 
 \subsection{Datasets}
-\textbf{Celeb-DF-v2} was used to train and validate the video branch, PGCF (Section~III-B), providing high-quality visual manipulations for spatial artifact learning.
+Table~\ref{tab:datasets} summarizes both corpora and the protocol applied to each. Video is sampled at $T=16$ frames per clip; audio is resampled to 16~kHz and windowed into 1~s (16{,}000-sample) segments represented by 64 mel bins.
 
-\textbf{FakeAVCeleb} \cite{khalid2021fakeavceleb} is used to train and validate AGCF and to evaluate the final multi-modal fusion framework. It contains authentic videos alongside multi-modal forgeries (e.g., FaceSwap, Wav2Lip, DeepFaceLab) spanning multiple ethnicities. For direct comparison under a matched protocol, PGCF is also evaluated on these FakeAVCeleb partitions rather than Celeb-DF-v2; these numbers are therefore same-corpus, paired video/audio performance, not a replacement for the original Celeb-DF-v2 result (AUC 0.824).
+\begin{table}[t]
+\caption{Corpora Used and Their Evaluation Protocol}
+\label{tab:datasets}
+\centering
+\small
+\begin{tabular}{p{1.15cm}p{2.5cm}p{3.1cm}}
+\toprule
+ & \textbf{Celeb-DF-v2} & \textbf{FakeAVCeleb} \cite{khalid2021fakeavceleb} \\
+\midrule
+Role & Train/val, video branch (PGCF) & Train/val, audio branch (AGCF); fusion evaluation \\
+Clips & 590 real / 5{,}639 fake & 21{,}566 (500 real video with real audio) \\
+Subjects & 59 & 500, five ethnicities, both genders \\
+Manipul-ations & face-swap synthesis & wav2lip, fsgan, faceswap, their pairwise combinations, rtvc \\
+Split & 80/20 train/val & subject-level, identity-disjoint \\
+Held-out set & balanced validation split & 198 clips (100 real / 98 fake) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+PGCF is also evaluated on the FakeAVCeleb partitions rather than Celeb-DF-v2, so that both branches are scored under a matched protocol; those numbers are same-corpus, paired video/audio performance, not a replacement for the Celeb-DF-v2 result (AUC 0.824).
 
 \subsection{Evaluation Integrity: Identity-Disjoint Splitting}
 During an audit of the AGCF training loop on FakeAVCeleb, we identified and corrected two flaws that materially affected the reported metrics.
@@ -307,10 +326,13 @@ Figure~\ref{fig:noise} reports AUC under additive Gaussian input noise ($\sigma$
 Requiring unanimity for the \emph{Real} verdict upper-bounds the AND-gate's miss rate by $\min(\text{FNR}_v, \text{FNR}_a)$: a forgery escapes only if \emph{both} branches independently fail to see it. Because PGCF and AGCF consume disjoint input signals (pixels vs. waveform) and train independently, their misses are only weakly correlated. This is what the paper's motivating hypothesis demands: PGCF is blind to audio-driven attacks that leave the visual stream untouched (e.g., voice cloning over an authentic video), while AGCF is blind to visual-only attacks that leave the audio untouched (e.g., a silent face-swap). A rule requiring unanimity to declare a clip \emph{fake} would discard every such attack; requiring it to declare a clip \emph{real} lets either branch raise the alarm. The symmetric cost is a fused false-positive rate bounded by $\text{FPR}_v + \text{FPR}_a$ rather than by either alone -- a trade-off to select on the relative cost of a missed forgery versus a false accusation.
 
 \subsection{Limitations}
-\textbf{Audio generalization gap.} AGCF's identity-disjoint AUC (0.884) trails PGCF's (0.999) and is markedly more noise-sensitive (Section~V-D); stronger audio-specific backbones (e.g., AASIST \cite{jung2022aasist}) could narrow this gap, at the cost of the architectural symmetry that makes fusion straightforward. \textbf{Calibration.} PGCF and AGCF are both under-confident below a predicted probability of 0.6, and Soft fusion is over-confident at low probabilities, since a low-but-nonzero product can still correspond to a majority-fake sub-population; post-hoc temperature scaling is recommended before any fused probability is surfaced as a user-facing confidence score. \textbf{Fixed thresholds.} Both $\tau_v$ and $\tau_a$ are fixed at 0.5 throughout; a deployment-specific threshold search would likely improve the AND-gate's precision-recall balance. \textbf{Dataset scale.} The 198-clip identity-disjoint held-out set is small by modern standards; broader validation, alongside the LAV-DF cross-dataset evaluation, remains future work.
+\textbf{Audio generalization gap.} AGCF's identity-disjoint AUC (0.884) trails PGCF's (0.999) and is markedly more noise-sensitive (Section~V-D). \textbf{Calibration.} PGCF and AGCF are both under-confident below a predicted probability of 0.6, and Soft fusion is over-confident at low probabilities, since a low-but-nonzero product can still correspond to a majority-fake sub-population. \textbf{Fixed thresholds.} Both $\tau_v$ and $\tau_a$ sit at 0.5 throughout, an operating point taken by convention rather than tuned. \textbf{Dataset scale.} The 198-clip identity-disjoint held-out set is small by modern standards, and every reported number comes from a single corpus.
+
+\subsection{Future Work}
+Each limitation above maps to a direction. The \emph{generalization gap} invites a stronger audio-specific backbone such as AASIST \cite{jung2022aasist}; the cost is the architectural symmetry that currently lets the two branches be fused without recalibration, so the substitution is not free and would need the fusion rules re-derived. \emph{Calibration} should be corrected post hoc, by temperature scaling, before any fused probability is surfaced to a user as a confidence score. \emph{Thresholds} $\tau_v$ and $\tau_a$ should be selected jointly against a deployment's relative cost of a missed forgery versus a false accusation, which the AND-gate's asymmetry (Section~VI-A) makes consequential. \emph{Scale} calls for zero-shot evaluation on an unseen corpus, for which LAV-DF \cite{cai2022lavdf} is the natural target, and for feature-level rather than decision-level fusion, which the shared temporal pipeline already makes feasible.
 
 \section{Conclusion}
-We presented PGCF+AGCF, an audio-visual deepfake detector comprising two networks proposed in this work -- PGCF for video and AGCF for audio, designed as architectural mirrors of each other -- together with two decision-level fusion strategies for combining them. On an identity-disjoint, held-out FakeAVCeleb evaluation, PGCF alone achieves an AUC of 0.999, AGCF alone achieves 0.884, and a conservative Hard AND-gate achieves perfect precision (zero false positives) at 83.8\% accuracy, while Soft fusion recovers additional recall (0.867 vs. 0.673) at the same precision. We further documented and corrected an identity-leakage and Cartesian-merge evaluation bug, showing the resulting metric inflation is large enough to alter the reported picture of audio-branch performance. Future work will focus on closing AGCF's generalization and noise-robustness gap relative to PGCF, deployment-specific threshold tuning for the AND-gate, and a zero-shot cross-dataset evaluation on LAV-DF.
+We presented PGCF+AGCF, an audio-visual deepfake detector comprising two networks proposed in this work -- PGCF for video and AGCF for audio, designed as architectural mirrors of each other -- together with two decision-level fusion strategies for combining them. On an identity-disjoint, held-out FakeAVCeleb evaluation, PGCF alone achieves an AUC of 0.999, AGCF alone achieves 0.884, and a conservative Hard AND-gate achieves perfect precision (zero false positives) at 83.8\% accuracy, while Soft fusion recovers additional recall (0.867 vs. 0.673) at the same precision. We further documented and corrected an identity-leakage and Cartesian-merge evaluation bug, showing the resulting metric inflation is large enough to alter the reported picture of audio-branch performance.
 
 \begin{thebibliography}{00}
 \setlength{\itemsep}{0pt}
