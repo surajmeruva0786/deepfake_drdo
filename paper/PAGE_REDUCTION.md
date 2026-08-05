@@ -482,6 +482,45 @@ detections — but precision falls from 0.988 to 0.925.
 
 ---
 
+# Eighth pass — LAV-DF moved from claimed work to future work
+
+**A second correctness fix.** The paper claimed an LAV-DF cross-dataset pipeline as a
+*delivered engineering contribution*, with only the numbers outstanding:
+
+> "We built an auto-resuming extraction pipeline for the 23.1 GB archive, a balanced
+> 150-real/150-fake filtration script, and a zero-shot cross-evaluation script; the
+> numerical results were not finalized in time for this submission and are reported as
+> ongoing work rather than estimated."
+
+No LAV-DF work was done. The dataset is a future intention. Claiming a built pipeline —
+with specific artefacts and file sizes — is the kind of detail a reviewer may ask to see.
+
+## Changes
+
+| Location | Was | Now |
+|---|---|---|
+| Contributions, bullet 4 | "…plus a complete code-level pipeline for **cross-dataset generalization** testing on LAV-DF, contributed as engineering work with results reported as ongoing rather than estimated" | Clause removed. Bullet claims only the evaluation suite that exists. |
+| §IV-A Datasets | A full LAV-DF paragraph describing the extractor, filtration script and cross-eval driver | **Paragraph deleted.** Datasets now lists the two corpora actually used: Celeb-DF-v2 and FakeAVCeleb. |
+| Related Work | "FakeAVCeleb and LAV-DF … are the datasets **used here** for audio-branch training/validation and cross-dataset generalization testing, respectively" | "FakeAVCeleb is the corpus used in this work, and LAV-DF is the natural target for the cross-dataset evaluation **we leave to future work**" |
+| Conclusion | "completing the cross-dataset LAV-DF evaluation **begun in this work**" | "a zero-shot cross-dataset evaluation on LAV-DF" |
+| §VI-B Limitations | "broader validation, alongside the LAV-DF cross-dataset evaluation, remains future work" | Unchanged — already correctly future-framed |
+
+All three surviving LAV-DF mentions are now unambiguously forward-looking.
+
+## Knock-on: bibliography reordered again
+
+Dropping the citation from contributions bullet 4 moved `cai2022lavdf`'s first mention
+from position 4 to position 10, breaking IEEE first-citation numbering. Reordered to:
+tolosana, prajwal, khalid, rossler, frank, li, ciftci, jung, sabir, **cai**, woo, dehaan.
+Audit re-run clean — no orphan labels, no undefined or uncited references.
+
+## Cost
+
+**−63 words (~73 pt).** This offsets the seventh pass's +77 words almost exactly, so the
+two correctness passes together are close to length-neutral.
+
+---
+
 # PLANNED — remaining content additions (agreed, not yet applied)
 
 **Item 1 (PGCF subsection) was applied in the sixth pass above** as part of the framing
