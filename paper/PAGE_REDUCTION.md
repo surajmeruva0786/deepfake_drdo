@@ -788,6 +788,70 @@ Not addressed in this pass, listed here so they are not lost:
 
 ---
 
+# Fourteenth pass — venue fit for WiCOMM-2026 (DRDO)
+
+Target venue: International Conference on Wireless Communication for Military
+Applications, WiCOMM-2026, DRDO-conducted.
+
+## Scope caveat, recorded up front
+
+**The paper contains no wireless content** — no channel model, link budget, protocol,
+spectrum or physical-layer work. Four sentences do not change that, and a scope
+desk-reject remains the realistic risk. These additions reduce it; they do not remove it.
+The genuine bridge is §V-D, the noise-robustness sweep, and everything below leans on it.
+
+## What was added
+
+| Location | Addition | Words |
+|---|---|---|
+| Introduction ¶1 | One sentence placing deepfakes in defence communications — a cloned voice on a command channel, a manipulated video briefing acted on before it can be authenticated. Placed *inside* the existing motivation, not appended after it. | ~30 |
+| §V-D | The closing clause now draws a conclusion from the noise data rather than gesturing at it: the audio branch degrades first, so the video branch should carry proportionally more weight as channel quality falls, and a fixed product rule is wrong for a link whose SNR varies. | ~45 |
+| §VI-A | In a monitoring role, where flagged material is escalated to a human analyst rather than acted on automatically, the precision/recall balance favours recall — the regime the corrected AND-gate occupies. | ~30 |
+| §VI-C | A deployment direction (below). | ~62 |
+
+**+116 words, ~134 pt.**
+
+## The deployment sentence, and why it is not the one requested
+
+The request was to state that the model is small, easily deployable, and usable for
+real-time wireless deepfake detection. Written that way it would be **unsupported and
+checkable**: `model.py` shows PGCF's spatial stream is a full **ResNet50** (~23.5M
+parameters, ~94 MB in fp32), which is not small by edge standards, and the paper reports
+no latency or memory figures at all. A defence audience evaluating deployability is
+exactly the audience that would verify this.
+
+What went in instead makes the same case defensibly:
+
+> "AGCF is compact — two three-layer CNNs over the shared temporal head — while PGCF's
+> footprint is dominated by its ResNet50 spatial stream, so substituting a mobile-class
+> backbone would bring the pair within reach of on-device inference. The target is
+> real-time screening of audio-visual traffic at a communications endpoint, contingent on
+> the latency and memory characterization we have not yet carried out."
+
+This names the actual bottleneck and a concrete engineering step, which reads as
+engineering judgement rather than an adjective, and it cannot be falsified by a reviewer
+who counts parameters.
+
+## Deliberately not done
+
+- **Title unchanged.** "…for Defence Applications" would read as exactly the
+  advertisement the authors wanted to avoid, and invites "generic deepfake paper with a
+  label attached".
+- **No "Military Applications" subsection.** Reviewers discount these.
+- **Abstract untouched.** At 240 of 250 words it is the most expensive place to add and
+  the most visible bolt-on; the Introduction does the same work one paragraph later.
+- **Keywords unchanged**, by author decision.
+
+## The change that would actually establish venue fit
+
+Not a sentence. Re-run the §V-D sweep against a **channel** rather than an abstract
+$\sigma$: AWGN at stated SNRs, or codec degradation at tactical bitrates (AMR-NB, Opus at
+low rate). Same experiment, same figure, but the x-axis becomes something a wireless
+audience recognises, and the paper stops being an AV-forensics paper wearing a defence
+label. This would do more for acceptance at WiCOMM than every sentence above combined.
+
+---
+
 # PLANNED — all items applied
 
 Three changes proposed by the authors, costed against the page budget. **Net cost of all
