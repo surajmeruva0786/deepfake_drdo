@@ -73,19 +73,54 @@ page settle back onto the previous one.
 
 Confirm the page count by compiling on Overleaf.
 
+---
+
+# Second pass — closing the last two reference lines
+
+After compiling pass 1 on Overleaf, **two reference entries** still sat on page 7.
+That is a gap of roughly **55–70 pt** of a single column (the bibliography runs at 8 pt,
+~9.7 pt per line, and the 12 entries occupied ~38 lines ≈ 369 pt).
+
+Four bib entries happened to sit *just past* a line boundary, wasting most of a line
+each, which made this cheap to close.
+
+| Change | Est. reclaimed |
+|---|---|
+| `\itemsep`/`\parsep` zeroed inside `thebibliography` (12 entries) | ~15–25 pt |
+| `cai2022lavdf`: venue → `Proc. DICTA` | ~10 pt (5 → 4 lines) |
+| `jung2022aasist`: → `J. Jung et al.` | ~10 pt (4 → 3 lines) |
+| `ablation_study.jpg` → `0.9\linewidth` | ~17 pt |
+| `robustness_noise.jpg` → `0.9\linewidth` | ~17 pt |
+
+**Total ~68–78 pt**, against a 55–70 pt gap. Bibliography went from ~38 to ~36 lines.
+
+Two notes on the bibliography edits:
+
+- The DICTA entry was **one character** past a 5-line boundary. Abbreviating
+  `2022 Int. Conf. Digital Image Computing: Techniques and Applications (DICTA)` to
+  `Proc. DICTA` is standard IEEE venue abbreviation — no information lost.
+- `jung2022aasist` has **eight** authors. IEEE style is to use *et al.* past six names,
+  so `J. Jung et al.` is a style-compliance fix that happens to save a line, not a
+  corner cut under page pressure.
+
 ## Remaining levers, if still over
 
 In order of least damage:
 
-1. `ablation_study.jpg` → `0.9\linewidth` (same 0.66 aspect ratio as `robustness_noise`,
-   ~17 pt, zero content loss).
-2. `robustness_noise.jpg` → `0.9\linewidth` (~17 pt).
-3. Drop `ablation_study.jpg` entirely (~215 pt incl. caption). It plots AUC + accuracy
+1. Trim the LAV-DF paragraph in §IV-A (Datasets) by ~30 words, ~35 pt. It restates
+   contribution bullet 4 and the cross-dataset note in the Limitations. This was the
+   held-in-reserve "Tier B" of the second pass.
+2. Drop `ablation_study.jpg` entirely (~215 pt incl. caption). It plots AUC + accuracy
    for the four configurations; `metrics_unseen_forest.jpg` already plots *all five*
-   metrics for the same four. This is the largest single remaining cut, and the two
-   figures are genuinely redundant.
-4. Drop Table II, the AND-gate truth table (~113 pt). Eq. (2) already states it
-   exhaustively. Retained by explicit decision in this pass.
+   metrics for the same four. Largest single remaining cut, and the two figures are
+   genuinely redundant.
+3. Drop Table II, the AND-gate truth table (~113 pt). Eq. (2) already states it
+   exhaustively. Retained by explicit decision in both passes.
+
+**Deliberately avoided:** applying *et al.* to `tolosana`, `rossler`, `frank`, or
+`sabir` would save ~4 more lines cheaply, but those have 5–6 authors, under IEEE's
+six-name threshold, and some style checkers flag it. Only reach for these if
+levers 1–3 are exhausted.
 
 ## Unused figures
 
