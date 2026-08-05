@@ -593,6 +593,53 @@ page pressure.
 
 ---
 
+# Tenth pass — abstract condensed and made coherent
+
+The abstract had grown to **303 words**, over the 250-word limit, and read as a list of
+facts rather than a single argument. Now **240 words, 9 sentences**.
+
+## Coherence
+
+The clearest defect was that it made the same point twice:
+
+- sentence 2 — "Neither pixels nor audio alone can settle whether a video is genuine"
+- sentence 7 — "Neither modality covers the attack surface alone"
+
+The second is gone. The remaining sentences now hand off to one another in a single arc —
+problem → proposal → PGCF → AGCF → why the mirroring matters → fusion → results → audit —
+rather than restarting at each new topic. The connective tissue is explicit
+("therefore", "Because the two branches are…", "An audit of our own protocol then…").
+
+## Readability
+
+Removed architecture detail that belongs in Table I and §III, not an abstract:
+`Classifier(512→2)`, the `4-head` and `(256)` sizings, and the stream-by-stream pairing
+of the spectral CNN to the DCT stream and the waveform CNN to the rPPG stream. AGCF is
+now introduced as applying "the same principle to speech", which is the idea a reader
+needs at this point.
+
+The trailing sentence — "Robustness under additive Gaussian noise, ROC/PR analysis, and
+t-SNE feature-space visualization are reported for all four configurations" — was an
+inventory bolted onto the end. The parts worth keeping are folded into the results
+sentence.
+
+## One correctness side effect
+
+The Hard AND-gate's headline figure — "100% precision — zero false positives on real
+videos — at 83.8% accuracy" — was **dropped**. It was computed under the old gate
+polarity (seventh pass) and will not survive recomputation, so removing it during a
+condensation pass avoids asserting a number known to be wrong. The *rule* is still
+described in the abstract; only its stale result is gone.
+
+This shortens the outstanding-stale-numbers list from the seventh pass by one item. The
+remainder still stand: Table V row 4, the Conclusion's claim, and §V-A/§V-B.
+
+## Cost
+
+**−63 words (~73 pt)**, offsetting about a third of the ninth pass's growth.
+
+---
+
 # PLANNED — all items applied
 
 Three changes proposed by the authors, costed against the page budget. **Net cost of all
