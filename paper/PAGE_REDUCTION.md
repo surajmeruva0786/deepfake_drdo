@@ -640,6 +640,44 @@ remainder still stand: Table V row 4, the Conclusion's claim, and §V-A/§V-B.
 
 ---
 
+# Eleventh pass — claims about figures that are not in the paper
+
+ROC curves, PR curves and calibration curves were removed from the paper in earlier
+trims, but four passages still described them. **No `\ref` was broken** — every one of
+these was plain prose, which is why the cross-reference audit never flagged them and why
+they survived ten passes.
+
+| Location | Was | Now |
+|---|---|---|
+| Contributions, bullet 4 | "**ROC/PR analysis**, confusion matrices, t-SNE visualization, and Gaussian-noise robustness" — the other three have figures; ROC/PR does not | "AUC and average-precision scores, confusion matrices, …" |
+| §V-A | "AGCF's 0.9009 **degrades further beyond a recall of roughly 0.5**" — a description of a PR curve's shape | Curve-shape clause dropped; the three AP scalars stand alone |
+| §VI-B Calibration | "PGCF and AGCF are both under-confident **below a predicted probability of 0.6**" — a value read off a reliability diagram | States the calibration limitation without the unverifiable threshold |
+| §III-D Soft rule | "a soft, probabilistic score suitable for **ROC/PR analysis**" | "a rankable score suitable for AUC and average-precision analysis" |
+
+Left unchanged: §III-D's "excluded from ROC/PR/AUC analysis, which requires a rankable
+score" (explains the "—" in Table V, does not promise a figure) and the noise figure's
+"AUC-ROC under increasing additive Gaussian noise" caption (that figure exists and plots
+AUC values).
+
+## Why not just add the figures back
+
+`calibration_curves.jpg`, `pr_curves.jpg` and `roc_curves.jpg` are all still in `figs/`.
+Restoring all three costs roughly **660 pt — a full page** at 0.873 aspect ratio plus
+captions. Not viable against a 6-page limit. Aligning the claims with what is shown costs
+nothing and saves 23 words.
+
+## Cost
+
+**−23 words.**
+
+## Still-unreferenced files in `figs/`
+
+`ablation_study.jpg`, `calibration_curves.jpg`, `pr_curves.jpg`, `roc_curves.jpg`,
+`confusion_matrices_indomain.jpg`, `metrics_indomain.jpg`. Harmless — LaTeX ignores
+them — and no prose now claims any of them.
+
+---
+
 # PLANNED — all items applied
 
 Three changes proposed by the authors, costed against the page budget. **Net cost of all
