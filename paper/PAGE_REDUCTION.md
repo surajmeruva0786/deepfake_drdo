@@ -901,6 +901,63 @@ recover ~141 pt, more than the WiCOMM additions cost.
 
 ---
 
+# SUBMISSION READINESS — WiCOMM-2026
+
+Consolidated status. Supersedes the scattered "outstanding" lists in the seventh,
+ninth and thirteenth passes.
+
+## Reproducibility artifacts: none provided
+
+Submission-checklist answer to *"No reproducibility artifacts provided"* is **Yes**
+(correct as of this commit). "Not Applicable" would be wrong — this is an empirical
+deep-learning paper with trained models and a numerical evaluation.
+
+Evidence:
+
+- `main.tex` contains **no code- or data-availability statement**. The single grep hit
+  for "reproduce" is about a generative model reproducing vocal detail, unrelated.
+- The public repo tracks only the paper — `main.tex`, `figs/`, this file, plus some loose
+  PDFs and images. No code, no weights, no predictions.
+- `github_codebase/` — `model.py`, `dataset.py`, the training notebooks,
+  `pgcf_predictions.csv`, `agcf_predictions.csv` — is **untracked and unpublished**.
+
+**This is cheap to flip and worth flipping.** Publishing the code and the two prediction
+CSVs, plus a one-line availability statement, changes the answer to "No". It matters more
+here than for a typical paper: reviewers will see a 0.999 AUC that reads as a
+cross-dataset result, on 198 clips, with no baseline comparison. Released per-clip
+predictions are the cheapest way to move that from "too good to believe" to "checkable",
+and they would let a reviewer verify the corrected AND-gate numbers independently.
+
+Cautions if released: do **not** push `archive (1)/FakeAVCeleb_v1.2/` (dataset
+licensing), and the repo will not build the paper regardless while `figs/architecture` is
+missing.
+
+## Blockers before submission
+
+| # | Issue | Status |
+|---|---|---|
+| 1 | **Hard-fusion numbers are stale.** Table V row 4, §V-A, §V-B and the confusion-matrix figure all describe the pre-seventh-pass gate polarity. §V-A's "the Hard AND-gate is the more conservative of the two" is now backwards. Bounds derivable from Table V + §V-B counts: accuracy 0.929–0.944, precision 0.882–0.899, recall 0.990–1.000. | **OPEN** |
+| 2 | **PGCF's training corpus may be undisclosed.** `build_combined_dataset.py` assembles Celeb-DF-v2 *plus ~7,000 FaceForensics++ folders*; the paper's dataset table says Celeb-DF-v2 only. Authors must confirm. | **OPEN** |
+| 3 | **`figs/architecture` is not in the repo.** The paper does not compile standalone; it builds only in the authors' Overleaf project. No page count in this document has ever been verified against a real compile. | **OPEN** |
+| 4 | **Audio chunk arithmetic.** §III-C describes 1 s / 16,000-sample chunks at T=32, implying 32 s of audio per clip — far longer than a typical FakeAVCeleb clip. | **OPEN** |
+| 5 | **The Soft rule retains the old polarity.** `P_v × P_a` suppresses precisely the single-modality attacks the corrected Hard gate catches, so the two rules now embody opposite philosophies without the paper acknowledging it. | **OPEN** |
+
+## Weaknesses that are not fixable by editing
+
+- **No baseline comparison** against any published method on the paper's own split. AASIST
+  is discussed and then explicitly not run. This is the likeliest first reviewer question
+  and the largest scientific gap.
+- **PGCF's 0.999 AUC** exceeds published cross-dataset state of the art, in a paper that
+  calls cross-dataset evaluation future work.
+- **"AGCF catches the audio-only attacks PGCF cannot"** is unsupported in the available
+  prediction data, where zero of 100 true fakes were detected by audio alone.
+- **198 clips, single corpus.**
+- **No wireless content** for a wireless-communications venue. See the fourteenth pass;
+  the substantive fix is re-running §V-D against a channel model or codec bitrates rather
+  than an abstract $\sigma$.
+
+---
+
 # PLANNED — all items applied
 
 Three changes proposed by the authors, costed against the page budget. **Net cost of all
