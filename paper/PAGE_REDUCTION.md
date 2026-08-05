@@ -852,6 +852,28 @@ label. This would do more for acceptance at WiCOMM than every sentence above com
 
 ---
 
+# Fifteenth pass — Future Work shortened
+
+§VI-C had grown to **194 words** across the ninth and fourteenth passes. Now **126**.
+
+All five directions survive — generalization gap, calibration, thresholds, scale,
+deployment — as do the two caveats that keep them defensible: that swapping in AASIST
+costs the architectural symmetry, and that the deployment claim is contingent on a
+latency and memory study not yet run.
+
+What was cut was padding, not substance:
+
+| Removed | Why |
+|---|---|
+| "so the substitution is not free and would need the fusion rules re-derived" | The preceding clause ("at the cost of the symmetry that makes fusion recalibration-free") already says this |
+| "AGCF is compact — two three-layer CNNs over the shared temporal head" | The point of the sentence is that **ResNet50 is the bottleneck**; cataloguing what is already small is beside it |
+| "feature-level rather than decision-level fusion" | The contrast is obvious in context; "feature-level fusion" suffices |
+| "should be selected jointly", "surfaced to a user as a confidence score", "for which … is the natural target" | Wordy constructions with terser equivalents |
+
+**−68 words (~78 pt)**, recovering roughly half the fourteenth pass's growth.
+
+---
+
 # PLANNED — all items applied
 
 Three changes proposed by the authors, costed against the page budget. **Net cost of all
