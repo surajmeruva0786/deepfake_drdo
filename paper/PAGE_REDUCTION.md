@@ -103,22 +103,90 @@ Two notes on the bibliography edits:
   so `J. Jung et al.` is a style-compliance fix that happens to save a line, not a
   corner cut under page pressure.
 
+---
+
+# Third pass — authorship framing, retitle, and the last reference line
+
+Two problems addressed together, because the fix for one paid for the other.
+
+## The framing problem
+
+The paper read as though **PGCF was pre-existing work** that this paper merely bolted
+an audio branch onto. That is wrong: both branches are ours. Video was stage one of the
+project, audio was added second, and the proposed contribution is the combined
+two-branch system.
+
+The clearest symptom: **the contributions list never claimed PGCF at all.** Bullet 1
+described AGCF only, so a reader would reasonably infer the video model came from
+somewhere else. Seven passages contributed to the impression:
+
+| Location | Was | Now |
+|---|---|---|
+| Contributions, bullet 1 | "**AGCF**, a dual-stream audio deepfake detector…" | "**PGCF+AGCF**, a two-branch audio-visual detector built in two stages…" |
+| Abstract | "an audio companion network" | "extend it into PGCF+AGCF, a two-branch detector whose second network…" |
+| Introduction ¶3 | "an audio companion network designed as a mirror of PGCF" | "extend PGCF into the two-branch PGCF+AGCF framework by developing a second network" |
+| §III-A heading | "PGCF Recap" | "Video Branch (PGCF)", + "the first stage of this work" |
+| §III-A close | "PGCF is not modified in this work." | *removed* |
+| §III-C open | "trained independently, which keeps PGCF completely unmodified" | "trained independently" |
+| §III (System Overview) | "PGCF is used exactly as developed in Section III-A" | *removed* |
+| §IV-A Datasets | "the visual-only PGCF **baseline**" | "the **video branch**, PGCF" |
+| Conclusion | "We presented **AGCF**, an audio companion network…" | "We presented **PGCF+AGCF**, a two-branch detector developed in two stages…" |
+
+"Recap", "baseline", "not modified", "companion" and "used exactly as developed" are all
+words that signal *someone else's finished artifact*. None of them survive.
+
+## Title
+
+| | |
+|---|---|
+| Pass 1 | PGCF+AGCF: Physiology- and Audio-Guided Consistency for Multi-Modal Deepfake Detection |
+| Interim | PGCF+AGCF: Physiology- and Audio-Guided Consistency for Audio-Visual Deepfake Detection |
+| **Final** | **PGCF+AGCF: Physiology-Guided Video and Audio-Guided Consistency for Deepfake Detection** |
+
+Three changes, one line of reasoning each:
+
+- **"Video" is now named.** The old title said "Audio-Guided" and "AGCF" but never
+  identified the visual modality — "Multi-Modal" was carrying that implicitly. Since the
+  video branch is half the contribution, it gets named.
+- **The suspended hyphen is gone.** "Physiology- and Audio-Guided" was correct English
+  (the trailing hyphen elides a shared "Guided", as in "pre- and post-processing"), but
+  spelling both out reads plainer and lets "Video" slot in naturally.
+- **"Multi-Modal"/"Audio-Visual" dropped.** With *Video* and *Audio* both named in the
+  title, it was redundant. Dropping it keeps the title at 86 characters — **still two
+  lines at IEEEtran title size, so the retitle costs no page space.**
+
+## Closing the last reference line
+
+After pass 2, **one** reference entry still sat on page 7 — roughly 20–30 pt.
+
+The framing rewrite was deliberately built to be *net-negative* in length so it could pay
+for this itself. The claim-strengthening edits (contributions bullet, Conclusion) added
+~20 words; the de-hedging edits (removing "not modified", "unmodified", "exactly as
+developed", "exclusively", "baseline") removed ~30. That netted only −10, so two further
+trims were added:
+
+| Change | Words |
+|---|---|
+| §IV-A LAV-DF paragraph — the reserved "Tier B" trim | −17 |
+| §IV-B paragraph after Table III — hedging around the PGCF split comparison | −17 |
+| Caption skip 3 pt → 2 pt across 6 figures + 4 tables | ~10 pt |
+
+**Net −26 words (~38 pt) plus ~10 pt of caption skip**, against a 20–30 pt gap.
+
 ## Remaining levers, if still over
 
 In order of least damage:
 
-1. Trim the LAV-DF paragraph in §IV-A (Datasets) by ~30 words, ~35 pt. It restates
-   contribution bullet 4 and the cross-dataset note in the Limitations. This was the
-   held-in-reserve "Tier B" of the second pass.
-2. Drop `ablation_study.jpg` entirely (~215 pt incl. caption). It plots AUC + accuracy
+1. Drop `ablation_study.jpg` entirely (~215 pt incl. caption). It plots AUC + accuracy
    for the four configurations; `metrics_unseen_forest.jpg` already plots *all five*
    metrics for the same four. Largest single remaining cut, and the two figures are
    genuinely redundant.
-3. Drop Table II, the AND-gate truth table (~113 pt). Eq. (2) already states it
-   exhaustively. Retained by explicit decision in both passes.
+2. Drop Table II, the AND-gate truth table (~113 pt). Eq. (2) already states it
+   exhaustively. Retained by explicit decision in all three passes.
+3. Related Work (269 words) is the only prose block never trimmed.
 
 **Deliberately avoided:** applying *et al.* to `tolosana`, `rossler`, `frank`, or
-`sabir` would save ~4 more lines cheaply, but those have 5–6 authors, under IEEE's
+`sabir` would save ~4 more bib lines cheaply, but those have 5–6 authors, under IEEE's
 six-name threshold, and some style checkers flag it. Only reach for these if
 levers 1–3 are exhausted.
 
