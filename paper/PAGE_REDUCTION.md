@@ -212,12 +212,74 @@ edits preserve it:
 `figs/ablation_study.jpg` is left in the repo, unreferenced, alongside the other five
 figures dropped in earlier trims.
 
+---
+
+# Fifth pass — cross-reference audit
+
+A full check of every figure, table, and citation in the paper. One real defect found
+and fixed; everything else verified clean.
+
+## Fixed: bibliography was not in first-citation order
+
+**IEEE numbers references by order of first citation.** The bibliography was in an
+arbitrary order, so **11 of 12 numbers were wrong**:
+
+| # | Was | Should be (and now is) |
+|---|---|---|
+| 1 | tolosana | tolosana ✓ (only one that was right) |
+| 2 | rossler | **prajwal** — Wav2Lip, cited in Intro ¶2 |
+| 3 | frank | **khalid** — FakeAVCeleb, Intro ¶4 |
+| 4 | li | **cai** — LAV-DF, contributions bullet 4 |
+| 5 | ciftci | **rossler** |
+| 6 | sabir | **frank** |
+| 7 | dehaan | **li** |
+| 8 | woo | **ciftci** |
+| 9 | khalid | **jung** |
+| 10 | cai | **sabir** |
+| 11 | jung | **woo** |
+| 12 | prajwal | **dehaan** |
+
+The four Introduction/contribution citations had been scattered to positions 2, 9, 10 and
+12 while Related Work occupied the low numbers. Reordering only — no entry added,
+removed, or reworded, **no length change**.
+
+## Verified clean
+
+| Check | Result |
+|---|---|
+| Labels defined vs. referenced | 9 labels, all referenced at least once; no orphans |
+| Undefined `\ref` | none |
+| Duplicate labels | none |
+| Bibitems vs. citations | 12 entries, all cited; no uncited, no undefined `\cite` |
+| Duplicate bib keys | none |
+| `\includegraphics` targets | 4 of 5 resolve in `figs/` (see caveat) |
+| Hand-written `Section~` cross-refs | all 6 resolve to the intended subsection |
+| Fig./Figure/Table style | already correct |
+
+On the last one: IEEE uses "Fig." mid-sentence and spells out "Figure" at the start of a
+sentence. The paper already did exactly that — `Fig.~\ref{fig:forest}` mid-sentence in
+§V-A, `Figure~` at the head of §V-B, §V-C and §V-D and in §III-A. No change needed.
+
+## Outstanding caveat
+
+`\includegraphics{figs/architecture}` has **no matching file in this repo** and no file
+extension. It presumably resolves in the Overleaf project. This has been true through
+every pass and is the reason none of the page-count work here is compile-verified.
+Worth committing the architecture figure to `figs/` so the repo builds standalone.
+
+## Unreferenced files in `figs/`
+
+Six files are no longer used by `main.tex`, accumulated across the trims:
+`ablation_study.jpg` (pass 4), `calibration_curves.jpg`, `pr_curves.jpg`,
+`roc_curves.jpg`, `confusion_matrices_indomain.jpg`, `metrics_indomain.jpg`. Harmless —
+LaTeX ignores them — and kept deliberately in case any need to come back.
+
 ## Remaining levers, if still over
 
 In order of least damage:
 
 1. Drop Table II, the AND-gate truth table (~113 pt). Eq. (2) already states it
-   exhaustively. Retained by explicit decision in all four passes.
+   exhaustively. Retained by explicit decision in all passes.
 2. Related Work (269 words) is the only prose block never trimmed.
 3. `tsne.jpg` is short (0.296 aspect ratio, ~75 pt) but its §V-C paragraph could lose
    ~20 words.
