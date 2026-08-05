@@ -874,6 +874,33 @@ What was cut was padding, not substance:
 
 ---
 
+# Sixteenth pass — Discussion §VI-A shortened
+
+**179 → 124 words.** Most of what went was duplicated from §III-D, two pages earlier.
+
+| Removed | Already in |
+|---|---|
+| The two worked examples — "voice cloning over an authentic video", "a silent face-swap" | §III-D: "a cloned voice over authentic video sets $r_v{=}1, r_a{=}0$, a silent face-swap sets $r_v{=}0, r_a{=}1$" |
+| "A rule requiring unanimity to declare a clip *fake* would discard every such attack; requiring it to declare a clip *real* lets either branch raise the alarm" | §III-D: "The mirror-image rule — unanimity to declare a clip fake — would discard exactly these cases" |
+| "a trade-off to select on the relative cost of a missed forgery versus a false accusation" | Made concrete by the very next sentence, on the monitoring role |
+
+§VI-A now refers back to those cases in a single clause rather than replaying them.
+
+**Kept, because it appears nowhere else:** the miss-rate bound
+$\min(\text{FNR}_v, \text{FNR}_a)$, the weak-correlation argument, the false-positive
+bound $\text{FPR}_v + \text{FPR}_a$, and the monitoring framing added in the fourteenth
+pass.
+
+**One claim also became more accurate.** The old text asserted weak correlation and
+stopped. Weakly correlated misses drive the fused miss rate toward the *product* of the
+two rates, which is strictly below the minimum — so the stated bound understates the
+benefit. The new text says so.
+
+**−55 words (~63 pt).** Together with the fifteenth pass, the two Discussion trims
+recover ~141 pt, more than the WiCOMM additions cost.
+
+---
+
 # PLANNED — all items applied
 
 Three changes proposed by the authors, costed against the page budget. **Net cost of all
