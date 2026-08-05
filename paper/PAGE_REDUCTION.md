@@ -391,6 +391,97 @@ several times over by the Table II cut queued below.
 
 ---
 
+# Seventh pass — AND-gate polarity
+
+**This is a correctness fix, not an editorial one, and it leaves the paper with known
+stale numbers. Read the "outstanding" section below before submitting.**
+
+## The defect
+
+The gate applied AND to the *fake* indicator: a clip was FAKE only if both branches said
+fake. The truth table therefore mapped
+
+| PGCF | AGCF | old verdict |
+|---|---|---|
+| Real | Fake | **Real** |
+| Fake | Real | **Real** |
+
+A cloned voice over authentic video is exactly `video=Real, audio=Fake`. The paper cites
+that attack, by name, in the abstract, the Introduction and §VI-A as the blind spot that
+justifies building an audio branch — and the fusion rule classified it as Real. The rule
+structurally could not detect the attack class that motivates the whole framework.
+
+## The fix
+
+Reformulated on the **Real** decision, which preserves the "Hard AND-gate" name
+throughout the title, contribution bullet 2 and §III-D:
+
+```
+r_v = 1[P(fake|video) <= tau_v],  r_a = 1[P(fake|audio) <= tau_a]
+y_AND = REAL  iff  (r_v = 1 AND r_a = 1),  else FAKE
+```
+
+Unanimity is now required to **clear** a clip, not to condemn it. A detection in either
+modality is sufficient to flag it. Behaviourally this is OR-over-fake, but stated as
+consensus-for-Real it stays an AND-gate and reads as the safer design.
+
+## What changed
+
+| Location | Change |
+|---|---|
+| Eq. (2) + setup | Recast on `r_v`/`r_a`, the binarized Real decisions |
+| Table II | Rows Real/Fake and Fake/Real now return **Fake** |
+| §III-D rationale | Argued the gate "trades recall for precision"; now correctly argues the reverse, and shows both single-modality attacks being flagged |
+| §VI-A bound | Claimed FPR ≤ min(FPR_v, FPR_a). Now a *miss-rate* bound, FNR ≤ min(FNR_v, FNR_a), with FPR bounded above by FPR_v + FPR_a |
+| Abstract, Introduction | Rule description only |
+
+**Net +77 words.**
+
+## OUTSTANDING — stale numbers, deliberately left in place
+
+Every Hard-fusion number in the paper was computed under the old rule and **must be
+recomputed before submission**:
+
+- Table IV, row "Late Fusion (Hard AND)": 0.838 / 1.000 / 0.673 / 0.805
+- Abstract: "the Hard AND-gate 100% precision — zero false positives on real videos — at
+  83.8% accuracy"
+- Conclusion: "a conservative Hard AND-gate achieves perfect precision (zero false
+  positives) at 83.8% accuracy"
+- §V-A: "Both fusion strategies achieve perfect precision (1.000)…", "the Hard AND-gate
+  is the more conservative of the two, forfeiting 19.6 recall points" — now
+  definitionally backwards; rewrite this paragraph wholesale after recomputing
+- §V-B: "Both fusion rules inherit this conservatism (32 missed fakes under Hard AND)"
+- `figs/confusion_matrices_unseen.jpg`: the Hard AND panel
+- `figs/metrics_unseen_forest.jpg`: the Hard AND bars
+
+**Perfect precision will not survive.** On the prediction CSVs in `github_codebase/`
+(a 168-clip set, 100 fake / 68 real, which does *not* match the paper's n=198 — PGCF's
+precision/recall/F1 match the paper exactly but AGCF's and Soft's do not):
+
+| Rule | Acc | Prec | Rec | F1 | TP/FP/FN/TN |
+|---|---|---|---|---|---|
+| Old (AND on fake) | 0.881 | 0.988 | 0.810 | 0.890 | 81/1/19/67 |
+| **New (AND on real)** | **0.946** | **0.925** | **0.990** | **0.957** | 99/8/1/60 |
+
+Better on accuracy and F1 — it stops the audio branch vetoing 18 correct video
+detections — but precision falls from 0.988 to 0.925.
+
+## Two related issues found, not changed
+
+1. **The Soft rule has the same defect.** `P_fused = P(fake|video) × P(fake|audio)` is
+   the soft analogue of AND-on-fake: a confident audio detection multiplied by a low
+   video score still yields a low fused score, so single-modality attacks are suppressed.
+   The noisy-OR form `1 − (1−P_v)(1−P_a)` would be the counterpart of the corrected hard
+   rule. Left alone because changing it invalidates the Soft numbers too.
+
+2. **"AGCF catches the audio-only attacks PGCF cannot" may be unsupported.** In the
+   prediction data, among 100 true fakes, the number detected by audio alone is **zero** —
+   all of the corrected gate's extra detections come from video-only cases. If that holds
+   on the real evaluation set, this claim (abstract, Introduction, §VI-A) is theoretical
+   rather than demonstrated, and a reviewer could challenge it.
+
+---
+
 # PLANNED — remaining content additions (agreed, not yet applied)
 
 **Item 1 (PGCF subsection) was applied in the sixth pass above** as part of the framing
