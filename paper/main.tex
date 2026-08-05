@@ -244,7 +244,7 @@ AGCF is trained for 20 epochs with an effective batch size of 8 (batch 2, 4 grad
 \section{Results}
 
 \subsection{Classification Performance}
-Table~\ref{tab:main} reports the primary, identity-disjoint evaluation for all four configurations. Fig.~\ref{fig:ablation} presents the same results as a bar chart, and Fig.~\ref{fig:forest} presents a per-metric comparison across all four.
+Table~\ref{tab:main} reports the primary, identity-disjoint evaluation for all four configurations, and Fig.~\ref{fig:forest} presents the same results per metric as an ablation over the two modalities and the two fusion rules.
 
 \begin{table}[t]
 \caption{Comprehensive Metrics -- Identity-Disjoint Evaluation (n=198)}
@@ -265,15 +265,8 @@ Late Fusion (Hard AND) & 0.838 & 1.000 & 0.673 & 0.805 & -- \\
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.9\linewidth]{figs/ablation_study.jpg}
-\caption{Ablation study: AUC-ROC and accuracy contribution of each modality (identity-disjoint evaluation).}
-\label{fig:ablation}
-\end{figure}
-
-\begin{figure}[t]
-\centering
 \includegraphics[width=0.9\linewidth]{figs/metrics_unseen_forest.jpg}
-\caption{Per-metric comparison across all four configurations (identity-disjoint evaluation).}
+\caption{Ablation study: per-metric comparison across all four configurations on the identity-disjoint set, isolating the contribution of each modality and of each fusion rule. The Hard AND-gate has no AUC bar, as it produces no rankable score.}
 \label{fig:forest}
 \end{figure}
 
