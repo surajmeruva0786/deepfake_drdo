@@ -177,18 +177,18 @@ Let $r_v = \mathbb{1}[P(\text{fake}\mid\text{video}) \le \tau_v]$ and $r_a = \ma
 Table~\ref{tab:truth} presents the complete truth table. Because the AND-gate is a strict binary consensus mechanism, it produces no continuous score and is therefore excluded from ROC/PR/AUC analysis, which requires a rankable score, but it remains fully reportable through a confusion matrix and point-estimate accuracy/precision/recall/F1.
 
 \begin{table}[t]
-\caption{Hard AND-Gate Fusion Truth Table}
+\caption{Hard AND-gate truth table. The AND is taken over the \emph{Real} decisions $r_v, r_a$, so unanimity clears a clip and a detection in either modality alone yields FAKE.}
 \label{tab:truth}
 \centering
 \small
-\begin{tabular}{ccc}
+\begin{tabular}{cccc}
 \toprule
-\textbf{PGCF says} & \textbf{AGCF says} & \textbf{Final verdict} \\
+\textbf{PGCF says} & \textbf{AGCF says} & $\mathbf{r_v \wedge r_a}$ & \textbf{Verdict} \\
 \midrule
-Real & Real & Real \\
-Real & Fake & \textbf{Fake} \\
-Fake & Real & \textbf{Fake} \\
-Fake & Fake & \textbf{Fake} \\
+Real & Real & 1 & Real \\
+Real & Fake & 0 & \textbf{Fake} \\
+Fake & Real & 0 & \textbf{Fake} \\
+Fake & Fake & 0 & \textbf{Fake} \\
 \bottomrule
 \end{tabular}
 \end{table}

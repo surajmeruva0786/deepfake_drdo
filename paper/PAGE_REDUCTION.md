@@ -278,8 +278,8 @@ LaTeX ignores them — and kept deliberately in case any need to come back.
 
 In order of least damage:
 
-1. Drop Table II, the AND-gate truth table (~113 pt). Eq. (2) already states it
-   exhaustively. Retained by explicit decision in all passes.
+1. ~~Drop Table II, the AND-gate truth table (~113 pt).~~ **Withdrawn — see the twelfth
+   pass.** The polarity fix made this table load-bearing rather than redundant.
 2. Related Work (269 words) is the only prose block never trimmed.
 3. `tsne.jpg` is short (0.296 aspect ratio, ~75 pt) but its §V-C paragraph could lose
    ~20 words.
@@ -580,9 +580,11 @@ words of §IV-A prose. The eighth pass had already deleted the LAV-DF paragraph,
 only ~88 words for the table to absorb, so the displacement saving mostly evaporated. The
 Future Work consolidation came in near its +61 pt estimate.
 
-**Recommendation:** cut Table II (the AND-gate truth table, ~113 pt) to offset roughly
-half of this. Eq. (2) now states the rule unambiguously, and after the polarity fix the
-table has three identical "Fake" rows — it carries even less information than before.
+**Recommendation (withdrawn):** this originally proposed cutting Table II (~113 pt) to
+offset half the growth, on the grounds that after the polarity fix the table "has three
+identical Fake rows and carries even less information than before". That reasoning was
+backwards and is retracted in the twelfth pass — those three rows are exactly what a
+reader needs in order to understand the corrected rule.
 
 ## Noted, not fixed
 
@@ -675,6 +677,50 @@ nothing and saves 23 words.
 `ablation_study.jpg`, `calibration_curves.jpg`, `pr_curves.jpg`, `roc_curves.jpg`,
 `confusion_matrices_indomain.jpg`, `metrics_indomain.jpg`. Harmless — LaTeX ignores
 them — and no prose now claims any of them.
+
+---
+
+# Twelfth pass — Table II kept and disambiguated (recommendation retracted)
+
+## Retraction
+
+Earlier passes recommended cutting Table II (the AND-gate truth table) **nine times**
+across this document, after the authors had already declined twice. The recommendation is
+**withdrawn**, and not only because it was over-repeated: the reasoning stopped being
+correct at the seventh pass.
+
+The original case was sound — a four-row truth table for a two-input boolean gate is
+redundant against Eq. (2), and at ~113 pt it was the largest lossless cut available. But
+the polarity fix changed what the table is *for*. "Hard AND-gate" now denotes AND over
+the **Real** decisions, which is not the reading a reviewer will assume. The truth table
+is the fastest way to convey that. The ninth pass argued the opposite — that three
+identical "Fake" rows meant it "carries even less information than before" — which is
+backwards: those three rows are the entire point of the corrected rule.
+
+## The real problem, which is labelling not redundancy
+
+Captioned "Hard AND-Gate Fusion Truth Table" and showing Fake in three of four rows, the
+table depicts — under the conventional Fake = 1 encoding a reader carries in — the truth
+table of an **OR** gate. The resolution is in Eq. (2) and the surrounding prose, but
+tables are read out of order and this one did not stand on its own.
+
+Fixed by making it self-contained rather than by deleting it:
+
+- **Added an $r_v \wedge r_a$ column** showing 1, 0, 0, 0 — the AND is now literally
+  visible, and it is immediately clear what the AND is over.
+- **Caption now states the semantics**: "The AND is taken over the *Real* decisions
+  $r_v, r_a$, so unanimity clears a clip and a detection in either modality alone yields
+  FAKE."
+
+Cost: one extra narrow column and roughly one caption line, ~10 pt.
+
+## Note on the levers generally
+
+Every space lever proposed in this document has been sized from static estimates —
+word counts, figure aspect ratios and IEEEtran column geometry. **No pass has ever been
+verified against a real compile**, because there is no TeX toolchain here and
+`figs/architecture` is not in the repo. That is why cuts kept being proposed from a
+generic list rather than against a measured shortfall.
 
 ---
 
